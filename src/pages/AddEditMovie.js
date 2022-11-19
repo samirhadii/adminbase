@@ -27,12 +27,12 @@ const AddEditMovie = () => {
   
 
   useEffect(() => {
-    id && getSingleUser();
+    id && getSingleMovie();
   }, [id])
 
-  const getSingleUser = async () => {
-    //users is the collection name within firebase 
-    const docRef = doc(db, "users", id);
+  const getSingleMovie = async () => {
+    //movies is the collection name within firebase 
+    const docRef = doc(db, "movies", id);
     const snapshot = await getDoc(docRef);
     if(snapshot.exists()) {
       setData({...snapshot.data()});
@@ -105,7 +105,7 @@ const handleSubmit = async (e) => {
   setIsSubmit(true);
   if(!id){
     try{
-      await addDoc(collection(db, "users"),{
+      await addDoc(collection(db, "movies"),{
         ...data,
         timestamp: serverTimestamp(),
       });
@@ -114,7 +114,7 @@ const handleSubmit = async (e) => {
     }
   }else{
     try{
-      await updateDoc(doc(db, "users",id),{
+      await updateDoc(doc(db, "movies",id),{
         ...data,
         timestamp: serverTimestamp(),
       });

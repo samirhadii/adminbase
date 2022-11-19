@@ -9,21 +9,24 @@ import ModalComp from '../components/ModalComp';
 
 
 const Home = () => {
-  const [users, setUsers] = useState([]);
+  const [movies, setMovies] = useState([]);
   const [open, setOpen] = useState(false);
-  const [user, setUser] = useState({});
+  const [movie, setMovie] = useState({});
   const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
+  const[promotions,setPromotions] =useState([]);
+  //const [promotion,setPromotion] = useState(false);
 
+//useeffect for movies
   useEffect(() => {
     setLoading(true);
-    //the collection db, "users" calls upon a database named users in the firebase setup
-    const unsub = onSnapshot(collection(db,"users"), (snapshot) => {
+    //the collection db, "movies" calls upon a database named movies in the firebase setup
+    const unsub = onSnapshot(collection(db,"movies"), (snapshot) => {
       let list = [];
       snapshot.docs.forEach((doc) => {
         list.push({id: doc.id, ...doc.data()})
       });
-      setUsers(list);
+      setMovies(list);
       setLoading(false)
 
     }, (error)=> {
@@ -33,6 +36,25 @@ const Home = () => {
       unsub();
     };
   }, []);
+  //useEffect for promotions
+  useEffect(() => {
+    setLoading(true);
+    //the collection db, "movies" calls upon a database named movies in the firebase setup
+    const promounsub = onSnapshot(collection(db,"promotions"), (snapshot) => {
+      let promolist = [];
+      snapshot.docs.forEach((doc) => {
+        promolist.push({id: doc.id, ...doc.data()})
+      });
+      setPromotions(promolist);
+      setLoading(false)
+
+    }, (error)=> {
+      console.log(error);
+    });
+    return () => {
+      promounsub();
+    };
+  }, []);
 
   if(loading) {
     return <Spinner />;
@@ -40,15 +62,26 @@ const Home = () => {
 
   const handleModal = (item) => {
     setOpen(true);
-    setUser(item);
+    setMovie(item);
   };
 
   const handleDelete = async (id) => {
     if(window.confirm("Are you sure you want to delete?")) {
       try {
         setOpen(false);
-        await deleteDoc(doc(db, "users",id));
-        setUsers(users.filter((user) => user.id !== id));
+        await deleteDoc(doc(db, "movies",id));
+        setMovies(movies.filter((movie) => movie.id !== id));
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+  const handlePromoDelete = async (id) => {
+    if(window.confirm("Are you sure you want to delete this promotion?")) {
+      try {
+        setOpen(false);
+        await deleteDoc(doc(db, "promotions",id));
+        setPromotions(promotions.filter((promotion) => promotion.id !== id));
       } catch (err) {
         console.log(err)
       }
@@ -59,24 +92,42 @@ const Home = () => {
 
 
   return (
-    <Container>
+    <Container> 
+      {/* Grid to separate promos from movies */}
       <Container>
       <h3>Promotions</h3>
-      <Grid columns = {1} stackable>
+      <Grid celled columns = {4} stackable>
+        {promotions && promotions.map((item) => (
+          <Grid.Column key = {item.id}>
         <Card>
           <Card.Content>
             <Card.Header>
-              Hello World
+              {item.name}
             </Card.Header>
+            <Card.Description>{item.details}</Card.Description>
+            <Card.Description>Code: {item.code}</Card.Description>
+            <Button 
+            color = "blue"
+            onClick = {()=>navigate(`/updatepromo/${item.id}`)}
+
+            >
+              Update 
+            </Button>
+            <Button 
+            color = "red"
+            onClick = {()=>handlePromoDelete(item.id)}>
+              Delete
+            </Button>
           </Card.Content>
         </Card>
+      </Grid.Column>
+      ))}
       </Grid>
     </Container>
       <h5>Today's Date is {date}</h5>
       <h2>Current Movies</h2>
-
         <Grid  columns={3} stackable>
-          {users && users.map((item) => (
+          {movies && movies.map((item) => (
             <Grid.Column key = {item.id}>
               <Card >
                 <Card.Content>
@@ -98,7 +149,7 @@ const Home = () => {
                   <div>
                     <Button 
                     color = "green" 
-                    onClick = {()=>navigate(`/update/${item.id}`)}
+                    onClick = {()=>navigate(`/updatemovie/${item.id}`)}
                     >
                       Update
                     </Button>
@@ -113,7 +164,7 @@ const Home = () => {
                       open = {open}
                       setOpen = {setOpen}
                       handleDelete = {handleDelete}
-                      {...user}
+                      {...movie}
 
                       />
                     )}
@@ -124,7 +175,9 @@ const Home = () => {
           ))}
         </Grid>
         <h2>Upcoming Movies</h2>
-
+        {/* put upcoming movies here */}
+      
+    
     </Container>
   )
 };

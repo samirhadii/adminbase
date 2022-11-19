@@ -12,7 +12,8 @@ const ModalComp = ({open, setOpen, img, name, info,genre,rating,datetime,youtube
             
             <Modal.Description>
                 <Header>{name}</Header> 
-                <YoutubeEmbed embedId={youtubelink.slice(17)} />
+                {/* <YoutubeEmbed embedId={youtubelink.slice(17)} /> */}
+                <YoutubeEmbed embedId={youtubelink}/>
                 <p>Genre: {genre}</p>
                 <p>Rating: {rating}</p>
                 <p>Date: {datetime}</p>
