@@ -1,6 +1,6 @@
 # Movie Theater Admin
 
-This Project is a React with Firebase CRUD application that allows an administrator of a movie theater to add,delete,update, and display movies to their movie theater firebase database.
+This Project is a React with Firebase CRUD application that allows an administrator of a movie theater to add,delete,update, and display movies and promotions to their movie theater firebase database.
 
 To start the react app, navigate to the project directory and run:
 
