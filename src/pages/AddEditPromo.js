@@ -52,12 +52,13 @@ if(!details){
 };
 
 const handleSubmit = async (e) => {
-if(window.confirm("Are you sure you want to add this promotion?")) {
+
   e.preventDefault();
   let errors = validate();
   if(Object.keys(errors).length) return setErrors(errors);
   setIsSubmit(true);
-  if(!id){
+  if(window.confirm("Are you sure you want to add this promotion?")) {
+    if(!id){
     try{
       await addDoc(collection(db, "promotions"),{
         ...data,
