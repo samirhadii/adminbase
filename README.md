@@ -17,6 +17,10 @@ Or NPM
 
 ### `npm install semantic-ui-react semantic-ui-css`
 
+The email send functionality relies on a few packages that you can add with:
+
+### `npm i nodemailer googleapis && npm i dotenv --save-dev`
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
