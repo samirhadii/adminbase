@@ -97,7 +97,13 @@ const validate = () => {
     errors.datetime = "release date is required";
   }
   if(!showtimes){
-    errors.datetime = "showtimes are required";
+    errors.showtimes = "showtimes are required";
+  }
+  //errpr returns if there is a movie already scheduled at that date and time (pull data from database later)
+  if(datetime === "03/03/2023" && showtimes === "8:00pm"){
+    errors.datetime = "there is already a movie scheduled on this date and time";
+    errors.showtimes = "there is already a movie scheduled on this date and time";
+    alert("there is already a movie scheduled on this date and time\nPlease alter either the date or time")
   }
   return errors;
 };

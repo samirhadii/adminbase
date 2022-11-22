@@ -97,7 +97,7 @@ const validate = () => {
     errors.datetime = "release date is required";
   }
   if(!showtimes){
-    errors.datetime = "showtimes are required";
+    errors.showtimes = "showtimes are required";
   }
   return errors;
 };

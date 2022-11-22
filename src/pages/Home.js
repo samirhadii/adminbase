@@ -183,6 +183,7 @@ const Home = () => {
                     </Card.Header>
                     <Card.Description>Rating: {item.rating}</Card.Description>
                     <Card.Description>{item.genre}</Card.Description>
+                    <Card.Description>{item.showtimes}</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                   <div>
@@ -232,6 +233,8 @@ const Home = () => {
                     </Card.Header>
                     <Card.Description>Rating: {newitem.rating}</Card.Description>
                     <Card.Description>{newitem.genre}</Card.Description>
+                    <Card.Description>{newitem.datetime}</Card.Description>
+                    <Card.Description>{newitem.showtimes}</Card.Description>
                 </Card.Content>
                 <Card.Content extra>
                   <div>
