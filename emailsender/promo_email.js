@@ -42,8 +42,10 @@ const createTransporter = async () => {
 //change this later to actually pull from emails in database
 var mailinglist = [
     "samirhadi929@gmail.com",
-    "thattdude001@gmail.com"
+    //"thattdude001@gmail.com"
 ]
+
+
 const sendEmail = async (emailOptions) => {
   let emailTransporter = await createTransporter();
   await emailTransporter.sendMail(emailOptions);
@@ -54,6 +56,5 @@ sendEmail({
   to: mailinglist,
   from: process.env.EMAIL,
   //text: "I am sending an email from nodemailer!"
-  html:'<h1>Try this new promo code!</h1><p>Try out this new code at checkout!</p>'
-
+  html:'<h1>New Promotion from WatchDawg Cinema</h1><p>Try out this new code at checkout!</p>'
 });

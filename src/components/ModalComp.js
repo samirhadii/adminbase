@@ -3,7 +3,7 @@ import {Modal,Header,Image, Button} from "semantic-ui-react";
 import YoutubeEmbed from './YoutubeEmbed';
 
 
-const ModalComp = ({open, setOpen, img, name, info,genre,rating,datetime,youtubelink,id,handleDelete}) => {
+const ModalComp = ({open, setOpen, img, name, info,genre,rating,datetime,showtimes,youtubelink,id,handleDelete}) => {
   return (
     <Modal onClose={() => setOpen(false)} onOpen={() => setOpen(true)} open = {open} >
         <Modal.Header>Movie Details</Modal.Header>
@@ -16,7 +16,8 @@ const ModalComp = ({open, setOpen, img, name, info,genre,rating,datetime,youtube
                 <YoutubeEmbed embedId={youtubelink}/>
                 <p>Genre: {genre}</p>
                 <p>Rating: {rating}</p>
-                <p>Date: {datetime}</p>
+                <p>Release Date: {datetime}</p>
+                <p>Showtimes: {showtimes}</p>
                 <p>{info}</p>
                 <p>Trailer Link: {youtubelink}</p>
                

@@ -11,11 +11,14 @@ import ModalComp from '../components/ModalComp';
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [open, setOpen] = useState(false);
+  const [newopen, setNewOpen] = useState(false);
   const [movie, setMovie] = useState({});
   const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const[promotions,setPromotions] =useState([]);
   //const [promotion,setPromotion] = useState(false);
+  const [newmovies, setNewMovies] = useState([]);
+  const [newmovie, setNewMovie] = useState({});
 
 //useeffect for movies
   useEffect(() => {
@@ -55,6 +58,25 @@ const Home = () => {
       promounsub();
     };
   }, []);
+  //useEffect for new movies
+  useEffect(() => {
+    setLoading(true);
+    //the collection db, "newmovies" calls upon a database named movies in the firebase setup
+    const newunsub = onSnapshot(collection(db,"newmovies"), (snapshot) => {
+      let newmovielist = [];
+      snapshot.docs.forEach((doc) => {
+        newmovielist.push({id: doc.id, ...doc.data()})
+      });
+      setNewMovies(newmovielist);
+      setLoading(false)
+
+    }, (error)=> {
+      console.log(error);
+    });
+    return () => {
+      newunsub();
+    };
+  }, []);
 
   if(loading) {
     return <Spinner />;
@@ -64,7 +86,12 @@ const Home = () => {
     setOpen(true);
     setMovie(item);
   };
-
+  //handle new modal for scheduled movies
+  const handleNewModal = (newitem) => {
+    setNewOpen(true);
+    setNewMovie(newitem);
+  };
+//handle movies delete
   const handleDelete = async (id) => {
     if(window.confirm("Are you sure you want to delete?")) {
       try {
@@ -82,6 +109,18 @@ const Home = () => {
         setOpen(false);
         await deleteDoc(doc(db, "promotions",id));
         setPromotions(promotions.filter((promotion) => promotion.id !== id));
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  }
+  //handle new movie delete
+  const handleNewMovieDelete = async (id) => {
+    if(window.confirm("Are you sure you want to delete?")) {
+      try {
+        setOpen(false);
+        await deleteDoc(doc(db, "newmovies",id));
+        setNewMovies(newmovies.filter((newmovie) => newmovie.id !== id));
       } catch (err) {
         console.log(err)
       }
@@ -175,9 +214,55 @@ const Home = () => {
           ))}
         </Grid>
         <h2>Upcoming Movies</h2>
-        {/* put upcoming movies here */}
+        <Grid  columns={3} stackable>
+          {newmovies && newmovies.map((newitem) => (
+            <Grid.Column key = {newitem.id}>
+              <Card >
+                <Card.Content>
+                  <Image 
+                  src = {newitem.img}
+                  size = "medium"
+                  style = {{
+                    height: "250px",
+                    width: "200px",
+                  }}
+                  />
+                  <Card.Header style={{marginTop: "10px"}} >
+                    {newitem.name}
+                    </Card.Header>
+                    <Card.Description>Rating: {newitem.rating}</Card.Description>
+                    <Card.Description>{newitem.genre}</Card.Description>
+                </Card.Content>
+                <Card.Content extra>
+                  <div>
+                    <Button 
+                    color = "green" 
+                    onClick = {()=>navigate(`/updateschedule/${newitem.id}`)}
+                    >
+                      Update
+                    </Button>
+                    <Button 
+                    color = "orange" 
+                    onClick = {()=>handleNewModal(newitem)}
+                    >
+                      View
+                    </Button>
+                    {newopen && (
+                      <ModalComp 
+                      newopen = {newopen}
+                      setNewOpen = {setNewOpen}
+                      handleNewMovieDelete = {handleNewMovieDelete}
+                      {...newmovie}
+
+                      />
+                    )}
+                  </div>
+                </Card.Content>
+              </Card>
+            </Grid.Column>
+          ))}
+        </Grid>
       
-    
     </Container>
   )
 };

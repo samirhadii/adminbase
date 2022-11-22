@@ -20,6 +20,9 @@ const NavBar = () => {
                 </h2>
             </Menu.Item>
             <Menu.Item position = "right">
+                <Button size = "mini" primary onClick={() => navigate("/schedule")}>Schedule a Movie</Button>
+            </Menu.Item>
+            <Menu.Item position = "right: 10%">
                 <Button size = "mini" primary onClick={() => navigate("/addmovie")}>Add Movie</Button>
             </Menu.Item>
             <Menu.Item position = "right: 90%">

@@ -16,7 +16,7 @@ const initialState = {
   youtubelink: ""
 
 }
-const AddEditMovie = () => {
+const AddEditNewMovie = () => {
   const [data, setData] = useState(initialState);
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(null);
@@ -33,7 +33,7 @@ const AddEditMovie = () => {
 
   const getSingleMovie = async () => {
     //movies is the collection name within firebase 
-    const docRef = doc(db, "movies", id);
+    const docRef = doc(db, "newmovies", id);
     const snapshot = await getDoc(docRef);
     if(snapshot.exists()) {
       setData({...snapshot.data()});
@@ -109,7 +109,7 @@ const handleSubmit = async (e) => {
   setIsSubmit(true);
   if(!id){
     try{
-      await addDoc(collection(db, "movies"),{
+      await addDoc(collection(db, "newmovies"),{
         ...data,
         timestamp: serverTimestamp(),
       });
@@ -118,7 +118,7 @@ const handleSubmit = async (e) => {
     }
   }else{
     try{
-      await updateDoc(doc(db, "movies",id),{
+      await updateDoc(doc(db, "newmovies",id),{
         ...data,
         timestamp: serverTimestamp(),
       });
@@ -194,9 +194,6 @@ const handleSubmit = async (e) => {
                   onChange={handleChange}
                   value = {youtubelink}
                   />
-
-
-
                    <Form.Input 
                   label = "movie poster"
                   type = "file"
@@ -223,4 +220,4 @@ const handleSubmit = async (e) => {
   )
 }
 
-export default AddEditMovie
+export default AddEditNewMovie
